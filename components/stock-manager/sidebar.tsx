@@ -16,11 +16,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/products", label: "Produits", icon: Package },
-  { href: "/categories", label: "Catégories", icon: FolderOpen },
-  { href: "/suppliers", label: "Fournisseurs", icon: Truck },
-  { href: "/chatbot", label: "Chatbot IA", icon: MessageSquare },
+  { href: "/admin/stock-manager", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/stock-manager/products", label: "Produits", icon: Package },
+  { href: "/admin/stock-manager/categories", label: "Catégories", icon: FolderOpen },
+  { href: "/admin/stock-manager/suppliers", label: "Fournisseurs", icon: Truck },
+  { href: "/admin/stock-manager/chatbot", label: "Chatbot IA", icon: MessageSquare },
 ]
 
 export function Sidebar() {
