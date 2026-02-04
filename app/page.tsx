@@ -1109,7 +1109,7 @@ export default function HomePage() {
           </div>
 
           <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2025 MoreFix. Tous droits réservés.</p>
+            <p>&copy; 2026 MoreFix. Tous droits réservés.</p>
           </div>
         </div>
       </footer>
