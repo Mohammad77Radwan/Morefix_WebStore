@@ -53,4 +53,4 @@ Tél: 07 45 92 35 38
 
 ---
 
-© 2025 MoreFix - Développé par Mohammad Radwan
+© 2026 MoreFix - Développé par Mohammad Radwan
