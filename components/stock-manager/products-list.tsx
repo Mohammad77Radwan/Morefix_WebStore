@@ -194,7 +194,7 @@ export function ProductsList() {
                   const supplier = getSupplierById(product.supplierId)
                   const status = getStockStatus(product.quantity)
                   return (
-                    <tr key={product.id} className="text-sm hover:bg-muted/30">
+                    <tr key={product.id} className="text-sm">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
@@ -226,13 +226,15 @@ export function ProductsList() {
                       <td className="p-4">
                         <Badge
                           className={
-                            status.variant === "warning"
-                              ? "bg-warning text-warning-foreground"
-                              : status.variant === "success"
-                                ? "bg-success text-success-foreground"
-                                : ""
+                            status.variant === "destructive"
+                              ? "bg-destructive text-destructive-foreground hover:bg-destructive"
+                              : status.variant === "warning"
+                                ? "bg-warning text-warning-foreground hover:bg-warning"
+                                : status.variant === "success"
+                                  ? "bg-success text-success-foreground hover:bg-success"
+                                  : ""
                           }
-                          variant={status.variant === "destructive" ? "destructive" : "default"}
+                          variant="default"
                         >
                           {status.label}
                         </Badge>
