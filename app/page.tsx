@@ -243,34 +243,32 @@ export default function HomePage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Image src="/logo.png" alt="MoreFix Logo" width={120} height={40} className="h-10 w-auto" />
-            </div>
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-2">
+            <Image src="/logo.png" alt="MoreFix Logo" width={120} height={40} className="h-8 sm:h-10 w-auto" />
 
             {/* Desktop Search */}
-            <div className="hidden md:flex items-center space-x-6">
-              <div className="relative">
+            <div className="hidden lg:flex items-center space-x-4 flex-1 mx-6">
+              <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Rechercher un produit..."
-                  className="pl-10 w-80"
+                  placeholder="Rechercher..."
+                  className="pl-10 text-sm"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               {/* Admin Panel Button - Only for admins */}
               {isAdmin && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowAdminPanel(!showAdminPanel)}
-                  className="hidden md:flex"
-                  title="Panneau d'administration"
+                  className="hidden md:flex p-2 min-h-10"
+                  title="Administration"
                 >
                   <ShieldCheck className="w-5 h-5 text-purple-600" />
                 </Button>
@@ -282,19 +280,19 @@ export default function HomePage() {
               ) : user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="flex items-center gap-2">
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-purple-100 text-purple-600 text-sm">
+                    <Button variant="ghost" size="sm" className="flex items-center gap-2 p-2 min-h-10">
+                      <Avatar className="h-7 w-7 sm:h-8 sm:w-8">
+                        <AvatarFallback className="bg-purple-100 text-purple-600 text-xs">
                           {user.displayName?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || "U"}
                         </AvatarFallback>
                       </Avatar>
-                      <span className="hidden md:inline text-sm font-medium">
-                        {user.displayName || user.email?.split("@")[0]}
+                      <span className="hidden sm:inline text-sm font-medium">
+                        {user.displayName?.split(" ")[0] || user.email?.split("@")[0]}
                       </span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <div className="px-2 py-1.5 text-sm text-gray-500">
+                    <div className="px-2 py-1.5 text-sm text-gray-500 truncate">
                       {user.email}
                     </div>
                     <DropdownMenuSeparator />
@@ -315,9 +313,9 @@ export default function HomePage() {
                 </DropdownMenu>
               ) : (
                 <Link href="/login">
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="flex items-center gap-1 sm:gap-2 p-2 sm:px-3 min-h-10 text-xs sm:text-sm">
                     <LogIn className="w-4 h-4" />
-                    <span className="hidden md:inline">Se connecter</span>
+                    <span className="hidden sm:inline">Connexion</span>
                   </Button>
                 </Link>
               )}
@@ -325,48 +323,49 @@ export default function HomePage() {
               {/* Wishlist */}
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="sm" className="relative">
+                  <Button variant="ghost" size="sm" className="relative p-2 min-h-10">
                     <Heart className="w-5 h-5" />
                     {wishlist.length > 0 && (
-                      <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
                         {wishlist.length}
                       </Badge>
                     )}
                   </Button>
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent side="right" className="w-full sm:w-96">
                   <SheetHeader>
                     <SheetTitle>Mes Favoris</SheetTitle>
                     <SheetDescription>
-                      {wishlist.length} produit{wishlist.length !== 1 ? "s" : ""} dans votre liste de souhaits
+                      {wishlist.length} produit{wishlist.length !== 1 ? "s" : ""}
                     </SheetDescription>
                   </SheetHeader>
-                  <div className="mt-6 space-y-4">
-                    {wishlist.map((id) => {
-                      const product = products.find((p) => p.id === id.toString())
-                      if (!product) return null
-                      return (
-                        <div key={id} className="flex items-center space-x-3 p-3 border rounded-lg">
-                          <div className="w-16 h-16 relative overflow-hidden rounded">
-                            <Image
-                              src={getCurrentImage(product) || "/placeholder.svg"}
-                              alt={product.title}
-                              fill
-                              className="object-contain"
-                            />
+                  <div className="mt-6 space-y-4 max-h-96 overflow-y-auto">
+                    {wishlist.length === 0 ? (
+                      <p className="text-sm text-gray-500 text-center py-8">Aucun produit dans vos favoris</p>
+                    ) : (
+                      wishlist.map((id) => {
+                        const product = products.find((p) => p.id === id.toString())
+                        if (!product) return null
+                        return (
+                          <div key={id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                            <div className="w-16 h-16 relative overflow-hidden rounded flex-shrink-0">
+                              <Image
+                                src={getCurrentImage(product) || "/placeholder.svg"}
+                                alt={product.title}
+                                fill
+                                className="object-contain"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">{product.title}</h4>
+                              <p className="text-purple-600 font-semibold">{product.price}€</p>
+                            </div>
+                            <Button variant="ghost" size="sm" onClick={() => toggleWishlist(product.id!)}>
+                              <X className="w-4 h-4" />
+                            </Button>
                           </div>
-                          <div className="flex-1">
-                            <h4 className="font-medium text-sm">{product.title}</h4>
-                            <p className="text-purple-600 font-semibold">{product.price}€</p>
-                          </div>
-                          <Button variant="ghost" size="sm" onClick={() => toggleWishlist(product.id!)}>
-                            <X className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      )
-                    })}
-                    {wishlist.length === 0 && (
-                      <p className="text-gray-500 text-center py-8">Aucun produit dans vos favoris</p>
+                        )
+                      })
                     )}
                   </div>
                 </SheetContent>
@@ -479,28 +478,28 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-400 via-purple-500 to-purple-700 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
+      <section className="bg-gradient-to-br from-orange-400 via-purple-500 to-purple-700 text-white py-8 sm:py-12 md:py-16">
+        <div className="container mx-auto px-3 sm:px-4 text-center">
           {/* Hero Logo - White version */}
-          <div className="mb-8 flex justify-center">
+          <div className="mb-4 sm:mb-8 flex justify-center">
             <Image
               src="/logo.png"
               alt="MoreFix Logo"
               width={240}
               height={80}
-              className="h-24 w-auto brightness-0 invert"
+              className="h-16 sm:h-20 md:h-24 w-auto brightness-0 invert"
               priority
             />
           </div>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">Produits High-Tech</h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-4">Produits High-Tech</h1>
+          <p className="text-base sm:text-lg md:text-2xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Découvrez notre sélection de produits reconditionnés et neufs à Saint-Étienne
           </p>
           <Button
             size="lg"
             onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-            className="bg-white text-purple-700 hover:bg-gray-100 font-semibold text-lg px-8 py-6"
+            className="bg-white text-purple-700 hover:bg-gray-100 font-semibold text-base sm:text-lg px-6 sm:px-8 py-4 sm:py-6"
           >
             Découvrir nos produits
           </Button>
@@ -545,43 +544,63 @@ export default function HomePage() {
       </Dialog>
 
       {/* Products Section */}
-      <section className="py-8 bg-white border-b" id="products">
-        <div className="container mx-auto px-4">
+      <section className="py-6 sm:py-8 bg-white border-b" id="products">
+        <div className="container mx-auto px-3 sm:px-4">
+          {/* Mobile Search */}
+          <div className="lg:hidden mb-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Rechercher..."
+                className="pl-10 text-sm w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
           {/* Filters and Sort */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={category === selectedCategory ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className={category === selectedCategory ? "bg-purple-600 hover:bg-purple-700" : ""}
-                >
-                  {category}
-                </Button>
-              ))}
+          <div className="flex flex-col gap-4 mb-6">
+            {/* Categories - Horizontal scroll on mobile */}
+            <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={category === selectedCategory ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`whitespace-nowrap text-xs sm:text-sm ${
+                      category === selectedCategory ? "bg-purple-600 hover:bg-purple-700" : ""
+                    }`}
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            {/* Sort and View - Stack on mobile */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:justify-between">
               <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortOption)}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-full sm:w-48 text-xs sm:text-sm">
                   <SelectValue placeholder="Trier par" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="newest">Plus récent</SelectItem>
-                  <SelectItem value="price-asc">Prix croissant</SelectItem>
-                  <SelectItem value="price-desc">Prix décroissant</SelectItem>
+                  <SelectItem value="price-asc">Prix ↑</SelectItem>
+                  <SelectItem value="price-desc">Prix ↓</SelectItem>
                   <SelectItem value="rating">Meilleures notes</SelectItem>
                 </SelectContent>
               </Select>
 
-              <div className="flex border rounded-md">
+              <div className="flex border rounded-md h-10">
                 <Button
                   variant={viewMode === "grid" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("grid")}
-                  className={viewMode === "grid" ? "bg-purple-600" : ""}
+                  className={`flex-1 ${viewMode === "grid" ? "bg-purple-600" : ""}`}
+                  title="Vue grille"
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
@@ -589,7 +608,8 @@ export default function HomePage() {
                   variant={viewMode === "list" ? "default" : "ghost"}
                   size="sm"
                   onClick={() => setViewMode("list")}
-                  className={viewMode === "list" ? "bg-purple-600" : ""}
+                  className={`flex-1 ${viewMode === "list" ? "bg-purple-600" : ""}`}
+                  title="Vue liste"
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -597,7 +617,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-6 text-sm">
             {filteredProducts.length} produit{filteredProducts.length !== 1 ? "s" : ""} trouvé
             {filteredProducts.length !== 1 ? "s" : ""}
           </p>
@@ -626,8 +646,8 @@ export default function HomePage() {
               <div
                 className={
                   viewMode === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    : "space-y-6"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+                    : "space-y-4 sm:space-y-6"
                 }
               >
                 {filteredProducts.map((product) => (
@@ -637,11 +657,11 @@ export default function HomePage() {
                       viewMode === "list" ? "flex flex-row" : ""
                     }`}
                   >
-                    <div className={`relative ${viewMode === "list" ? "w-48 flex-shrink-0" : ""}`}>
+                    <div className={`relative ${viewMode === "list" ? "w-32 sm:w-48 flex-shrink-0" : ""}`}>
                       <div className="relative">
                         <div
                           className={`relative overflow-hidden cursor-pointer bg-white ${
-                            viewMode === "list" ? "w-full h-full aspect-square" : "w-full h-48"
+                            viewMode === "list" ? "w-full h-full aspect-square" : "w-full h-40 sm:h-48"
                           }`}
                           onClick={() => {
                             const currentIndex = selectedImageIndex[product.id!] || 0
@@ -653,7 +673,7 @@ export default function HomePage() {
                             alt={product.title}
                             fill
                             className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           />
                         </div>
 
@@ -663,22 +683,24 @@ export default function HomePage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                              className="absolute left-1 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity z-10 h-8 w-8 p-0"
                               onClick={(e) => {
                                 e.stopPropagation()
                                 handleImageNavigation(product.id!, "prev", product.images!.length)
                               }}
+                              title="Image précédente"
                             >
                               <ChevronLeft className="w-4 h-4" />
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                              className="absolute right-1 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white opacity-0 group-hover:opacity-100 transition-opacity z-10 h-8 w-8 p-0"
                               onClick={(e) => {
                                 e.stopPropagation()
                                 handleImageNavigation(product.id!, "next", product.images!.length)
                               }}
+                              title="Image suivante"
                             >
                               <ChevronRight className="w-4 h-4" />
                             </Button>
@@ -688,7 +710,7 @@ export default function HomePage() {
                               {product.images.map((_, index) => (
                                 <div
                                   key={index}
-                                  className={`w-2 h-2 rounded-full ${
+                                  className={`w-1.5 h-1.5 rounded-full ${
                                     index === (selectedImageIndex[product.id!] || 0) ? "bg-purple-600" : "bg-gray-300"
                                   }`}
                                 />
@@ -698,15 +720,16 @@ export default function HomePage() {
                         )}
                       </div>
 
-                      <div className="absolute top-3 right-3 flex gap-2">
+                      <div className="absolute top-2 right-2 flex gap-1">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="bg-white/80 hover:bg-white"
+                          className="bg-white/80 hover:bg-white h-8 w-8 p-0"
                           onClick={(e) => {
                             e.stopPropagation()
                             toggleWishlist(product.id!)
                           }}
+                          title={wishlist.includes(product.id!) ? "Retirer des favoris" : "Ajouter aux favoris"}
                         >
                           <Heart
                             className={`w-4 h-4 ${wishlist.includes(product.id!) ? "fill-red-500 text-red-500" : ""}`}
@@ -716,11 +739,12 @@ export default function HomePage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="bg-red-500/80 hover:bg-red-600 text-white"
+                            className="bg-red-500/80 hover:bg-red-600 text-white h-8 w-8 p-0"
                             onClick={(e) => {
                               e.stopPropagation()
                               handleDeleteProduct(product.id!, product.title)
                             }}
+                            title="Supprimer"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -728,25 +752,25 @@ export default function HomePage() {
                       </div>
                       {product.inStock === false && (
                         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                          <Badge variant="destructive" className="text-lg px-4 py-2">
-                            Rupture de stock
+                          <Badge variant="destructive" className="text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2">
+                            Rupture
                           </Badge>
                         </div>
                       )}
                     </div>
 
-                    <div className={viewMode === "list" ? "flex-1" : ""}>
+                    <div className={viewMode === "list" ? "flex-1 flex flex-col" : ""}>
                       <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-2">
                           <Badge variant="outline" className="text-xs">
                             {product.category}
                           </Badge>
-                          <div className="rounded-full px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-orange-500 to-purple-600 shadow-sm">
+                          <div className="rounded-full px-2 sm:px-3 py-1 text-xs font-medium text-white bg-gradient-to-r from-orange-500 to-purple-600 shadow-sm">
                             {product.condition}
                           </div>
                         </div>
-                        <CardTitle className="text-lg line-clamp-2">{product.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{product.description}</CardDescription>
+                        <CardTitle className="text-base sm:text-lg line-clamp-2">{product.title}</CardTitle>
+                        <CardDescription className="line-clamp-2 text-xs sm:text-sm">{product.description}</CardDescription>
 
                         {viewMode === "list" && product.features && (
                           <div className="mt-2">
@@ -882,37 +906,37 @@ export default function HomePage() {
       </Dialog>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 bg-white">
-        <div className="container mx-auto px-4">
+      <section id="contact" className="py-8 sm:py-12 md:py-16 bg-white">
+        <div className="container mx-auto px-3 sm:px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Intéressé par un produit ?</h2>
-              <p className="text-xl text-gray-600">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Intéressé par un produit ?</h2>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600">
                 Contactez-nous pour plus d'informations, négocier le prix ou organiser un rendez-vous
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-4">
-                  <Phone className="w-8 h-8 text-white" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+              <Card className="p-4 sm:p-6">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-3 sm:mb-4">
+                  <Phone className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-center">Appelez-nous</h3>
-                <p className="text-gray-600 mb-4 text-center">Discutez directement avec notre équipe</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-center">Appelez-nous</h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-4 text-center">Discutez directement avec notre équipe</p>
                 <Button
-                  className="w-full bg-gradient-to-r from-orange-500 to-purple-600"
+                  className="w-full bg-gradient-to-r from-orange-500 to-purple-600 min-h-10 text-sm sm:text-base"
                   onClick={() => window.open("tel:0745923538")}
                 >
                   07 45 92 35 38
                 </Button>
               </Card>
 
-              <Card className="p-6">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-white" />
+              <Card className="p-4 sm:p-6">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-3 sm:mb-4">
+                  <Mail className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-center">Envoyez un message</h3>
-                <p className="text-gray-600 mb-4 text-center">Décrivez le produit qui vous intéresse</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-center">Envoyez un message</h3>
+                <p className="text-xs sm:text-sm text-gray-600 mb-4 text-center">Décrivez le produit qui vous intéresse</p>
                 <ContactForm />
               </Card>
             </div>
@@ -921,28 +945,28 @@ export default function HomePage() {
       </section>
 
       {/* Location Section with Google Map */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <section className="py-8 sm:py-12 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-3 sm:px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Notre Magasin</h2>
-              <p className="text-xl text-gray-600">Venez nous rendre visite à Saint-Étienne</p>
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">Notre Magasin</h2>
+              <p className="text-sm sm:text-base md:text-lg text-gray-600">Venez nous rendre visite à Saint-Étienne</p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 items-start">
               {/* Location Info */}
-              <Card className="p-6 h-fit">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-6">
-                  <MapPin className="w-8 h-8 text-white" />
+              <Card className="p-4 sm:p-6 h-fit">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-400 to-purple-600 rounded-full mx-auto mb-4 sm:mb-6">
+                  <MapPin className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-4 text-center">MoreFix Saint-Étienne</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-center">MoreFix Saint-Étienne</h3>
 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-start space-x-3">
-                    <MapPin className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                    <MapPin className="w-4 sm:w-5 h-4 sm:h-5 text-purple-600 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Adresse</p>
-                      <p className="text-gray-600">
+                      <p className="font-medium text-sm sm:text-base">Adresse</p>
+                      <p className="text-xs sm:text-sm text-gray-600">
                         10 Rue Mi-Carême
                         <br />
                         42000 Saint-Étienne
@@ -951,25 +975,25 @@ export default function HomePage() {
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <Phone className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                    <Phone className="w-4 sm:w-5 h-4 sm:h-5 text-purple-600 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Téléphone</p>
-                      <p className="text-gray-600">07 45 92 35 38</p>
+                      <p className="font-medium text-sm sm:text-base">Téléphone</p>
+                      <p className="text-xs sm:text-sm text-gray-600">07 45 92 35 38</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3">
-                    <Mail className="w-5 h-5 text-purple-600 mt-1 flex-shrink-0" />
+                    <Mail className="w-4 sm:w-5 h-4 sm:h-5 text-purple-600 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-medium">Email</p>
-                      <p className="text-gray-600">contact@morefix.fr</p>
+                      <p className="font-medium text-sm sm:text-base">Email</p>
+                      <p className="text-xs sm:text-sm text-gray-600">contact@morefix.fr</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-6 pt-6 border-t">
-                  <h4 className="font-semibold mb-3">Horaires d'ouverture</h4>
-                  <div className="space-y-2 text-sm">
+                <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t">
+                  <h4 className="font-semibold text-sm sm:text-base mb-3">Horaires d'ouverture</h4>
+                  <div className="space-y-2 text-xs sm:text-sm">
                     <div className="flex justify-between">
                       <span>Mardi - Samedi</span>
                       <span className="text-gray-600">10h00 - 19h00</span>
@@ -985,9 +1009,9 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   <Button
-                    className="w-full bg-gradient-to-r from-orange-500 to-purple-600"
+                    className="w-full bg-gradient-to-r from-orange-500 to-purple-600 min-h-10 text-sm sm:text-base"
                     onClick={() =>
                       window.open("https://maps.google.com/?q=10+Rue+Mi-Carême,+42000+Saint-Étienne", "_blank")
                     }
@@ -1010,15 +1034,15 @@ export default function HomePage() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title="MoreFix Location - 10 Rue Mi-Carême, Saint-Étienne"
-                    className="w-full h-96 lg:h-[500px]"
+                    className="w-full h-64 sm:h-80 md:h-96 lg:h-[500px]"
                   />
                 </div>
 
                 {/* Map overlay with business info */}
-                <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-3 shadow-lg max-w-xs">
+                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-white/95 backdrop-blur-sm rounded-lg p-2 sm:p-3 shadow-lg max-w-xs">
                   <div className="flex items-center space-x-2 mb-2">
                     <div className="w-3 h-3 bg-gradient-to-r from-orange-500 to-purple-600 rounded-full"></div>
-                    <span className="font-semibold text-sm">MoreFix</span>
+                    <span className="font-semibold text-xs sm:text-sm">MoreFix</span>
                   </div>
                   <p className="text-xs text-gray-600">10 Rue Mi-Carême</p>
                   <p className="text-xs text-gray-600">42000 Saint-Étienne</p>
@@ -1030,26 +1054,26 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="col-span-2">
+      <footer className="bg-gray-900 text-white py-8 sm:py-12">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div className="sm:col-span-2">
               <Image
                 src="/logo.png"
                 alt="MoreFix Logo"
                 width={150}
                 height={50}
-                className="h-12 w-auto mb-4 brightness-0 invert"
+                className="h-10 sm:h-12 w-auto mb-3 sm:mb-4 brightness-0 invert"
               />
-              <p className="text-gray-400 mb-4 max-w-md">
+              <p className="text-gray-400 mb-4 max-w-md text-sm sm:text-base">
                 Votre marketplace de confiance pour les produits high-tech reconditionnés et neufs. Qualité garantie et
                 prix compétitifs.
               </p>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Catégories</h4>
-              <ul className="space-y-2 text-gray-400">
+              <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Catégories</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
                 {categories.slice(1).map((category) => (
                   <li key={category}>
                     <button
@@ -1067,8 +1091,8 @@ export default function HomePage() {
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact</h4>
-              <div className="space-y-2 text-gray-400">
+              <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Contact</h4>
+              <div className="space-y-2 text-gray-400 text-sm">
                 <button
                   className="block hover:text-white transition-colors"
                   onClick={() => window.open("tel:0745923538")}
@@ -1078,12 +1102,13 @@ export default function HomePage() {
                 <button className="block hover:text-white transition-colors" onClick={scrollToContact}>
                   📧 contact@morefix.fr
                 </button>
-                <p>📍 10 Rue Mi-Carême, 42000 Saint-Étienne</p>
+                <p>📍 10 Rue Mi-Carême</p>
+                <p>42000 Saint-Étienne</p>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-400 text-sm">
             <p>&copy; 2025 MoreFix. Tous droits réservés.</p>
           </div>
         </div>
