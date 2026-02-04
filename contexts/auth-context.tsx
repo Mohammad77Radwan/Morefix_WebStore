@@ -98,7 +98,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signIn = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const { signInWithEmailAndPassword } = await import("firebase/auth")
-      await signInWithEmailAndPassword(auth, email, password)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      
+      // Get ID token for server-side session
+      const token = await userCredential.user.getIdToken()
+
+      // Store token in HTTP-only cookie via API
+      await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          token,
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+          displayName: userCredential.user.displayName,
+        }),
+      })
+
       return { success: true }
     } catch (error: any) {
       let errorMessage = "Une erreur est survenue lors de la connexion"
@@ -120,6 +137,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const { createUserWithEmailAndPassword, updateProfile } = await import("firebase/auth")
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       await updateProfile(userCredential.user, { displayName: name })
+      
+      // Get ID token for server-side session
+      const token = await userCredential.user.getIdToken()
+
+      // Store token in HTTP-only cookie via API
+      await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          token,
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+          displayName: name,
+        }),
+      })
+
       // Update local state with display name
       setUser({
         uid: userCredential.user.uid,
@@ -143,6 +177,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async (): Promise<void> => {
     try {
       const { signOut: firebaseSignOut } = await import("firebase/auth")
+      
+      // Clear server-side session
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      })
+
+      // Sign out from Firebase
       await firebaseSignOut(auth)
     } catch (error) {
       console.error("Sign out error:", error)
