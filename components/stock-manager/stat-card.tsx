@@ -20,7 +20,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card className={cn(
-      "border-border",
+      "border-border hover:bg-slate-50",
       variant === "warning" && "border-warning/50",
       variant === "danger" && "border-destructive/50",
       variant === "success" && "border-success/50"
