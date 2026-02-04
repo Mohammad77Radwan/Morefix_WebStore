@@ -47,10 +47,10 @@ export function StatCard({
       </CardHeader>
       <CardContent>
         <div className={cn(
-          "text-2xl font-bold",
+          "text-2xl",
+          variant === "success" ? "font-black text-primary" : "font-bold",
           variant === "warning" && "text-warning",
-          variant === "danger" && "text-destructive",
-          variant === "success" && "text-success"
+          variant === "danger" && "text-destructive"
         )}>
           {value}
         </div>
