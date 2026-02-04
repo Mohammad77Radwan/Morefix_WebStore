@@ -20,28 +20,28 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
+    --primary: 231 48% 48%;
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --muted-foreground: 0 0% 25%;
     --accent: 0 0% 96.1%;
     --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --warning: 25 95% 53%;
-    --success: 262 83% 58%;
-    --danger: 0 84.2% 60.2%;
-    --warning-foreground: 0 0% 100%;
-    --success-foreground: 0 0% 100%;
-    --danger-foreground: 0 0% 100%;
+    --warning: 45 93% 94%;
+    --success: 142 76% 96%;
+    --danger: 0 84% 95%;
+    --warning-foreground: 45 93% 47%;
+    --success-foreground: 142 71% 45%;
+    --danger-foreground: 0 84% 60%;
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
@@ -77,12 +77,12 @@ body {
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --warning: 25 95% 53%;
-    --success: 262 83% 58%;
-    --danger: 0 62.8% 30.6%;
-    --warning-foreground: 0 0% 100%;
-    --success-foreground: 0 0% 100%;
-    --danger-foreground: 0 0% 100%;
+    --warning: 45 93% 94%;
+    --success: 142 76% 96%;
+    --danger: 0 84% 95%;
+    --warning-foreground: 45 93% 47%;
+    --success-foreground: 142 71% 45%;
+    --danger-foreground: 0 84% 60%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
@@ -108,5 +108,8 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .card {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   }
 }
