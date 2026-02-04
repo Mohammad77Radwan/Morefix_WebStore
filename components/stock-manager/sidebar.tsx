@@ -63,6 +63,17 @@ export function Sidebar() {
             <span className="text-xl font-bold text-sidebar-foreground">MoreFix</span>
           </div>
 
+          {/* Back to Admin */}
+          <div className="p-4">
+            <Link
+              href="/"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Admin Panel
+            </Link>
+          </div>
+
           {/* Navigation */}
           <nav className="flex-1 space-y-1 p-4">
             {navItems.map((item) => {
