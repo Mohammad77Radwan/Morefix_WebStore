@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   creator: "Mohammad Radwan",
   publisher: "MoreFix",
   generator: "v0.dev",
+  other: {
+    "google": "notranslate",
+  },
 }
 
 export default function RootLayout({
@@ -20,7 +23,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" translate="no">
+      <head>
+        <meta name="google" content="notranslate" />
+      </head>
       <body>
         <ClientProviders>
           {children}
