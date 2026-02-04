@@ -67,7 +67,7 @@ export function Sidebar() {
           <div className="p-4">
             <Link
               href="/"
-              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-slate-100 hover:text-slate-900"
             >
               <LayoutDashboard className="h-4 w-4" />
               Admin Panel
@@ -87,7 +87,7 @@ export function Sidebar() {
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                     isActive
                       ? "bg-sidebar-accent text-sidebar-primary"
-                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                      : "text-sidebar-foreground/70 hover:bg-slate-100 hover:text-slate-900"
                   )}
                 >
                   <item.icon className="h-5 w-5" />
