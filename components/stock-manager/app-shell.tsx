@@ -2,27 +2,19 @@
 
 import type { ReactNode } from "react"
 import { StoreProvider } from "@/lib/stock-manager/store-context"
-import { ThemeProvider } from "./theme-provider"
 import { Sidebar } from "./sidebar"
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem={false}
-      disableTransitionOnChange
-    >
-      <StoreProvider>
-        <div className="min-h-screen bg-background">
-          <Sidebar />
-          <main className="lg:pl-64">
-            <div className="min-h-screen p-4 pt-20 lg:p-8 lg:pt-8">
-              {children}
-            </div>
-          </main>
-        </div>
-      </StoreProvider>
-    </ThemeProvider>
+    <StoreProvider>
+      <div className="min-h-screen bg-background">
+        <Sidebar />
+        <main className="lg:pl-64">
+          <div className="min-h-screen p-4 pt-20 lg:p-8 lg:pt-8">
+            {children}
+          </div>
+        </main>
+      </div>
+    </StoreProvider>
   )
 }
