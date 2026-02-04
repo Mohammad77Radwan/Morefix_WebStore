@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, X, Unlock, LogOut, ShieldAlert } from "lucide-react"
+import { Plus, X, Unlock, LogOut, ShieldAlert, ExternalLink } from "lucide-react"
 import { addProduct, type Product } from "@/lib/products-store"
 import { toast } from "@/hooks/use-toast"
 import { useAuth } from "@/contexts/auth-context"
@@ -171,10 +171,19 @@ export function AdminPanel({ isAuthenticated, onLogout, onProductAdded }: AdminP
           </h2>
           <p className="text-sm text-gray-600">Connecté en tant que: {user.email}</p>
         </div>
-        <Button variant="outline" onClick={onLogout} className="bg-transparent text-red-600 border-red-200 hover:bg-red-50">
-          <LogOut className="w-4 h-4 mr-2" />
-          Déconnexion
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={() => window.open("https://asset-manager--xxmrdiabloxxrac.replit.app/", "_blank")}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Gestionnaire d'Actifs
+          </Button>
+          <Button variant="outline" onClick={onLogout} className="bg-transparent text-red-600 border-red-200 hover:bg-red-50">
+            <LogOut className="w-4 h-4 mr-2" />
+            Déconnexion
+          </Button>
+        </div>
       </div>
 
       <Card>
