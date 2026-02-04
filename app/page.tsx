@@ -80,6 +80,11 @@ export default function HomePage() {
     setProductsLoading(false)
   }, [])
 
+  // Show admin panel for admins
+  useEffect(() => {
+    setShowAdminPanel(isAdmin)
+  }, [isAdmin])
+
   // Load wishlist from Firestore when user logs in
   useEffect(() => {
     async function loadWishlist() {
