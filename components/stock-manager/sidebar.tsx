@@ -70,7 +70,7 @@ export function Sidebar() {
               className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <LayoutDashboard className="h-4 w-4" />
-              Admin Panel
+              Panneau d'Administration
             </Link>
           </div>
 
