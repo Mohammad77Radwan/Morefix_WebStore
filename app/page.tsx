@@ -38,6 +38,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { toast } from "@/hooks/use-toast"
 import { ContactForm } from "@/components/contact-form"
 import { AdminPanel } from "@/components/admin-panel"
+import { ExternalLinksButtons } from "@/components/external-links-buttons"
 import Image from "next/image"
 import Link from "next/link"
 import { getProducts, deleteProduct as deleteProductFromStore, type Product } from "@/lib/products-store"
@@ -515,6 +516,14 @@ export default function HomePage() {
         <section className="py-8 bg-purple-50 border-b">
           <div className="container mx-auto px-4">
             <AdminPanel isAuthenticated={isAdmin} onLogout={handleLogout} onProductAdded={refreshProducts} />
+          </div>
+        </section>
+      )}
+
+      {showAdminPanel && isAdmin && (
+        <section className="py-8 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <ExternalLinksButtons />
           </div>
         </section>
       )}

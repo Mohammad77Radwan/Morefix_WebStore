@@ -227,11 +227,11 @@ export function ProductsList() {
                         <Badge
                           className={
                             status.variant === "destructive"
-                              ? "bg-danger text-slate-700 hover:bg-danger font-bold"
+                              ? "bg-danger text-danger-foreground hover:bg-danger font-bold"
                               : status.variant === "warning"
-                                ? "bg-warning text-slate-700 hover:bg-warning font-bold"
+                                ? "bg-warning text-warning-foreground hover:bg-warning font-bold"
                                 : status.variant === "success"
-                                  ? "bg-success text-slate-700 hover:bg-success font-bold"
+                                  ? "bg-success text-success-foreground hover:bg-success font-bold"
                                   : ""
                           }
                           variant="default"
